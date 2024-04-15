@@ -1,56 +1,49 @@
 import { useState } from 'react'
 
 
+const Statistics = ({good,neutral,bad} ) => {
+  // const [total, setTotal] = useState(0)
+  // const [average, setAverage] = useState(0)
+  // const [positive, setPositive] = useState(0)
+
+  const total = good + neutral + bad;
+  const average = total ? (good - bad) / total : 0;
+  const positivePercentage = total ? (good / total) * 100 : 0;
+
+
+  return (
+      <div>
+        {total === 0 ? (<p>No feedback given</p> ):( 
+        <>
+        <p>good {good}</p>
+        <p>neutral {neutral}</p>
+        <p>bad {bad}</p>
+        <p>all {total}</p>
+        <p>average {average}</p>
+        <p>positive {positivePercentage} %</p>
+        </>
+        )}        
+      </div>    
+  );
+}
+
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  const [total, setTotal] = useState(0)
-  const [average, setAverage] = useState(0)
-  const [positive, setPositive] = useState(0)
-
-  const updateAverage = (props) => {
-    const {newGood, newBad,newTotal} = props;
-    if (newTotal === 0) 
-      setAverage(0);
-    else
-      setAverage((newGood - newBad) / newTotal);
-  }
-
-  const updatePositive = (props) => {
-    const {newGood, newTotal} = props;    
-    if (newTotal === 0)
-      setPositive(0);
-    else
-      setPositive((newGood / newTotal) * 100);
-  }
-
-  const updateStatistics = (newGood,newNeutral,newBad) => {
-    // console.log(newGood,newNeutral,newBad);
-    let newTotal = newGood + newNeutral + newBad;    
-    setTotal(newTotal);
-    updateAverage({newGood, newBad,newTotal});
-    updatePositive({newGood, newTotal});
-  } 
-
 
   const handleGoodClick = () => {
-    let newGood = good + 1;
-    setGood(newGood);
-    updateStatistics(newGood,neutral,bad);
+    setGood(good + 1);    
   }
 
-  const handleNeutralClick = () => {
-    let newNeutral = neutral + 1;
-    setNeutral(newNeutral);
-    updateStatistics(good,newNeutral,bad);
+  const handleNeutralClick = () => {    
+    setNeutral(neutral + 1);    
   }
 
-  const handleBadClick = () => {
-    let newBad = bad + 1;
-    setBad(newBad);
-    updateStatistics(good,neutral,newBad);
+  const handleBadClick = () => {    
+    setBad(bad + 1);    
   }
 
   return (
@@ -62,14 +55,8 @@ const App = () => {
         <button onClick={handleBadClick}>bad</button>
       </div>
       <h2>statistics</h2>
-      <div>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-        <p>all {total}</p>
-        <p>average {average}</p>
-        <p>positive {positive} %</p>
-      </div>
+      <Statistics good={good} neutral={neutral} bad={bad} />
+
     </div>
   )
 }
