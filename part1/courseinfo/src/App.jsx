@@ -1,22 +1,24 @@
 
 
 const Header = (props) => {  
+  const {title} = props;
   return ( 
-    <h1>{props.title}</h1>
+    <h1>{title}</h1>
    );
 }
 
 const Part = (props) => {
+  const {name, exercises} = props;
   return ( 
-    <p>{props.name} {props.exercises}</p>
+    <p>{name} {exercises}</p>
    );  
 }
 
 const Content = (props) => {
-  
+  const {parts} = props;
   return (  
     <div>{
-      props.parts.map((part,index) => {
+      parts.map((part,index) => {
         return <Part key={index} name={part.name} exercises={part.exercises}/>
       })
     }
@@ -25,6 +27,7 @@ const Content = (props) => {
 }
 
 const Total = (props) => {
+  const {parts} = props;
   let total = 0;
   props.parts.forEach(part => {
     total += part.exercises;
