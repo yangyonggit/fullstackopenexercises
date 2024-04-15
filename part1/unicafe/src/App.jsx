@@ -2,10 +2,6 @@ import { useState } from 'react'
 
 
 const Statistics = ({good,neutral,bad} ) => {
-  // const [total, setTotal] = useState(0)
-  // const [average, setAverage] = useState(0)
-  // const [positive, setPositive] = useState(0)
-
   const total = good + neutral + bad;
   const average = total ? (good - bad) / total : 0;
   const positivePercentage = total ? (good / total) * 100 : 0;
