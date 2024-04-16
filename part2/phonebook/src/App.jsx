@@ -38,9 +38,17 @@ const App = () => {
       number: newNumber
     }
     console.log('nameObject', nameObject)
-    if (persons.find(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
-      return
+    const person = persons.find(person => person.name === newName)
+    if (person) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {  
+        PersonHttp.update(person.id,nameObject).then(result => {
+          const newPersons = persons.map(p => p.id !== person.id ? p : result);
+          setPersons(newPersons);
+          setNewName('');
+          setNewNumber('');
+        });
+      }
+      return;
     }
 
     PersonHttp.create(nameObject)
@@ -93,7 +101,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} setPersons={setPersons} />
 
       {/* <div>debug: {newName}</div> */}
     </div>

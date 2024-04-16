@@ -1,9 +1,30 @@
+import PersonHttp from "./PersonHttp"
 
 const Persons = (props) => {
-    const { persons } = props;
+    const { persons,setPersons } = props;
+
+    const handleDelete = (event) => {
+      const id = event.target.dataset.id;
+      const name = event.target.dataset.name;
+      if (window.confirm(`Delete ${name}?`)) {  
+        PersonHttp.deletePerson(id).then(result => {
+          const newPersons = persons.filter(person => person.id !== id);
+          setPersons(newPersons);          
+        });
+      }
+    }
+  
+    console.log('Persons ', persons);
     return (
       <div>
-        {persons.map(person => <p key={person.name}>{person.name}   {person.number}</p>)}
+        {          
+          persons.map(person => 
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <p key={person.id}>{person.name}   {person.number}</p> 
+          <button onClick={handleDelete} data-id = {person.id} data-name={person.name}>delete</button> 
+          </div>)
+        }
+      
       </div>
       );
   }
@@ -38,5 +59,6 @@ const Persons = (props) => {
     </form>
     );
   }
+
 
   export {Persons, Filter, PersonForm}
