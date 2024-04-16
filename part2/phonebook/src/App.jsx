@@ -1,6 +1,6 @@
 import { useState, useEffect} from 'react'
 import {Filter,PersonForm,Persons} from './PersonComp'
-import axios from 'axios'
+import PersonHttp from './PersonHttp'
 
 
 
@@ -14,18 +14,17 @@ const App = () => {
 
   const [filteredPersons, setFilteredPersons] = useState(persons)
 
-  const hook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        console.log(response.data)
-        setPersons(response.data)
-      })
-  }
+
   
-  useEffect(hook, [])
+  useEffect( () => {
+    console.log('effect')
+    PersonHttp.getAll()
+      .then(initPersons => {
+        console.log('promise fulfilled')
+        console.log(initPersons)
+        setPersons(initPersons)
+      })
+  }, [])
 
    // 监听 persons 的变化并更新 filteredPersons
    useEffect(() => {
@@ -44,9 +43,9 @@ const App = () => {
       return
     }
 
-    axios.post('http://localhost:3001/persons', nameObject)
-    .then(response => {
-      let personList = persons.concat(nameObject)
+    PersonHttp.create(nameObject)
+    .then(result => {
+      let personList = persons.concat(result)
       setPersons(personList)
       setNewName('')
       setNewNumber('')
