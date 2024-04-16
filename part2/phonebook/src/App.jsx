@@ -1,15 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import {Filter,PersonForm,Persons} from './PersonComp'
+import axios from 'axios'
 
 
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
 
   const [newNumber, setNewNumber] = useState('')
@@ -17,6 +13,24 @@ const App = () => {
   const [search, setSearch] = useState('')
 
   const [filteredPersons, setFilteredPersons] = useState(persons)
+
+  const hook = () => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        console.log(response.data)
+        setPersons(response.data)
+      })
+  }
+  
+  useEffect(hook, [])
+
+   // 监听 persons 的变化并更新 filteredPersons
+   useEffect(() => {
+    setFilteredPersons(persons);  // 更新 filteredPersons 以反映 persons 的最新状态
+  }, [persons]);
 
   const addName = (event) => {
     event.preventDefault()
@@ -33,9 +47,6 @@ const App = () => {
     setPersons(personList)
     setNewName('')
     setNewNumber('')
-    if (search === '') {
-      setFilteredPersons(personList)
-    }
   }
 
   const handleNameChange = (event) => {
