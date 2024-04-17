@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react'
-import {Filter,PersonForm,Persons} from './PersonComp'
+import {Filter, PersonForm, Persons, Notification } from './PersonComp'
 import PersonHttp from './PersonHttp'
 
 
@@ -13,6 +13,8 @@ const App = () => {
   const [search, setSearch] = useState('')
 
   const [filteredPersons, setFilteredPersons] = useState(persons)
+
+  const [message, setMessage] = useState(null)
 
 
   
@@ -46,6 +48,10 @@ const App = () => {
           setPersons(newPersons);
           setNewName('');
           setNewNumber('');
+          setMessage(`Updated ${newName}`);
+          setTimeout(() => {
+            setMessage(null);
+          },5000);
         });
       }
       return;
@@ -57,6 +63,10 @@ const App = () => {
       setPersons(personList)
       setNewName('')
       setNewNumber('')
+      setMessage(`Added ${newName}`);
+      setTimeout(() => {
+        setMessage(null);
+      },5000);
     })
   }
 
@@ -87,6 +97,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {message && <Notification message={message} />}
       <Filter 
         search={search}
         handleSearchChange={handleSearchChange}

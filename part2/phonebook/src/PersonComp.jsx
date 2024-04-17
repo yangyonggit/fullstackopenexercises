@@ -60,5 +60,22 @@ const Persons = (props) => {
     );
   }
 
+  const Notification = (props) => {
+    const {message} = props;
+    const notificationStyle = {
+      color: 'green',
+      fontStyle: 'italic',
+      fontSize: 16,
+      border: '2px solid green',
+      backgroundColor: 'lightgrey',
+      padding: '10px',
+      marginBottom: '10px'
+    }
 
-  export {Persons, Filter, PersonForm}
+    return (      
+      <p style={notificationStyle}>{message}</p>      
+    );
+  }
+
+
+  export {Persons, Filter, PersonForm, Notification}
