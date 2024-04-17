@@ -18,9 +18,9 @@ const Persons = (props) => {
     return (
       <div>
         {          
-          persons.map(person => 
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-          <p key={person.id}>{person.name}   {person.number}</p> 
+          persons.map(person =>             
+          <div style={{display: 'flex', alignItems: 'center' }} key={person.id}>
+          <p>{person.name}   {person.number}</p> 
           <button onClick={handleDelete} data-id = {person.id} data-name={person.name}>delete</button> 
           </div>)
         }
