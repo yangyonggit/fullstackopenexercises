@@ -1,5 +1,5 @@
 import { useState, useEffect} from 'react'
-import {Filter, PersonForm, Persons, Notification } from './PersonComp'
+import {Filter, PersonForm, Persons, Notification, ErrorMsg } from './PersonComp'
 import PersonHttp from './PersonHttp'
 
 
@@ -15,6 +15,8 @@ const App = () => {
   const [filteredPersons, setFilteredPersons] = useState(persons)
 
   const [message, setMessage] = useState(null)
+
+  const [errorMsg, setErrorMsg] = useState(null)
 
 
   
@@ -52,7 +54,14 @@ const App = () => {
           setTimeout(() => {
             setMessage(null);
           },5000);
-        });
+        }).catch(error => {
+          setErrorMsg(`Information of ${newName} has already been removed from server`);
+          setTimeout(() => {
+            setErrorMsg(null);
+          },5000);
+          setPersons(persons.filter(p => p.id !== person.id));
+        
+        })
       }
       return;
     }
@@ -67,6 +76,13 @@ const App = () => {
       setTimeout(() => {
         setMessage(null);
       },5000);
+    }).catch(error => {
+      setErrorMsg(`Information of ${newName} has already been removed from server`);
+      setTimeout(() => {
+        setErrorMsg(null);
+      },5000);
+      setPersons(persons.filter(p => p.id !== person.id));
+    
     })
   }
 
@@ -98,6 +114,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       {message && <Notification message={message} />}
+      {errorMsg && <ErrorMsg message={errorMsg} />}
       <Filter 
         search={search}
         handleSearchChange={handleSearchChange}
@@ -112,7 +129,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} setPersons={setPersons} />
+      <Persons persons={filteredPersons} setPersons={setPersons} setErrorMsg={setErrorMsg}/>
 
       {/* <div>debug: {newName}</div> */}
     </div>
