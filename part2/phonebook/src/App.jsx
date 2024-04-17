@@ -35,6 +35,15 @@ const App = () => {
     setFilteredPersons(persons);  // 更新 filteredPersons 以反映 persons 的最新状态
   }, [persons]);
 
+  //handle error message
+  const handleError = (id,name) => {
+    setPersons(persons.filter(p => id !== p.id));
+    setErrorMsg(`Information of ${name} has already been removed from server`);
+    setTimeout(() => {
+      setErrorMsg(null);
+    },5000);    
+  }
+
   const addName = (event) => {
     event.preventDefault()
     const nameObject = {
@@ -54,14 +63,7 @@ const App = () => {
           setTimeout(() => {
             setMessage(null);
           },5000);
-        }).catch(error => {
-          setErrorMsg(`Information of ${newName} has already been removed from server`);
-          setTimeout(() => {
-            setErrorMsg(null);
-          },5000);
-          setPersons(persons.filter(p => p.id !== person.id));
-        
-        })
+        }).catch(() => handleError(person.id,person.name));        
       }
       return;
     }
@@ -76,14 +78,7 @@ const App = () => {
       setTimeout(() => {
         setMessage(null);
       },5000);
-    }).catch(error => {
-      setErrorMsg(`Information of ${newName} has already been removed from server`);
-      setTimeout(() => {
-        setErrorMsg(null);
-      },5000);
-      setPersons(persons.filter(p => p.id !== person.id));
-    
-    })
+    }).catch(() => handleError(person.id,person.name));        
   }
 
   const handleNameChange = (event) => {
@@ -129,7 +124,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} setPersons={setPersons} setErrorMsg={setErrorMsg}/>
+      <Persons persons={filteredPersons} setPersons={setPersons} handleError={handleError}/>
 
       {/* <div>debug: {newName}</div> */}
     </div>

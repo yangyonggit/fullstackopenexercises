@@ -1,7 +1,7 @@
 import PersonHttp from "./PersonHttp"
 
 const Persons = (props) => {
-    const { persons,setPersons,setErrorMsg } = props;
+    const { persons,setPersons, handleError} = props;
 
     const handleDelete = (event) => {
       const id = event.target.dataset.id;
@@ -10,14 +10,7 @@ const Persons = (props) => {
         PersonHttp.deletePerson(id).then(result => {
           const newPersons = persons.filter(person => person.id !== id);
           setPersons(newPersons);          
-        }).catch(error => {
-          const newPersons = persons.filter(person => person.id !== id);
-          setPersons(newPersons); 
-          setErrorMsg(`Information of ${name} has already been removed from server`);
-          setTimeout(() => {
-            setErrorMsg(null);
-          },5000);          
-        });
+        }).catch(() => handleError(id,name));        
       }
     }
   
