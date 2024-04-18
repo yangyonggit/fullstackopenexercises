@@ -20,13 +20,20 @@ const TooManyResults = () => {
     );
 }
 
-const ResultsList = ({searchList}) => {
+const ResultsList = ({searchList,setSearchList}) => {
+    const handleShow = (event) => {
+        console.log(event.target.dataset.id)
+        const newList = searchList.filter(country => country.area === parseInt(event.target.dataset.id))
+        setSearchList(newList)
+    }
+
     return (        
     <div>
         {
         searchList.map(country => 
              <div style={{display: 'flex', alignItems: 'center' }} key={country.area}>
              <p>{country.name.common}</p> 
+             <button onClick={handleShow} data-id = {country.area} >Show</button> 
              </div>)
         }
     </div>
@@ -53,14 +60,14 @@ const DetailResults = ({country}) => {
 
 
 
-const SearchResults = ({searchList}) => {
+const SearchResults = ({searchList,setSearchList}) => {
     const isMoreThenTen = searchList.length > 10;
     const isOne = searchList.length === 1;
 
     return (
         <div>
             {isMoreThenTen && <TooManyResults />}
-            {!isMoreThenTen && !isOne && <ResultsList searchList={searchList} />}
+            {!isMoreThenTen && !isOne && <ResultsList searchList={searchList} setSearchList={setSearchList}/>}
             {isOne && <DetailResults country={searchList[0]} />}
         </div>
     );

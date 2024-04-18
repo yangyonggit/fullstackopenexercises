@@ -42,7 +42,7 @@ function App() {
   return (    
       <div>
         <CountrySearchInput search={search} handleSearch={handleSearch} disableInput={disableInput}/>
-        <SearchResults searchList={searchList} />
+        <SearchResults searchList={searchList} setSearchList={setSearchList}/>
       </div>    
   )
 }
