@@ -36,12 +36,20 @@ const App = () => {
   }, [persons]);
 
   //handle error message
-  const handleError = (id,name) => {
+  const handleDeleteError = (id,name) => {
     setPersons(persons.filter(p => id !== p.id));
     setErrorMsg(`Information of ${name} has already been removed from server`);
     setTimeout(() => {
       setErrorMsg(null);
     },5000);    
+  }
+
+  const handleError = (error) => {
+    console.log("client received error: ",error.response.data)
+    setErrorMsg(JSON.stringify(error.response.data));
+    setTimeout(() => {
+      setErrorMsg(null);
+    },5000);
   }
 
   const addName = (event) => {
@@ -63,7 +71,7 @@ const App = () => {
           setTimeout(() => {
             setMessage(null);
           },5000);
-        }).catch(() => handleError(person.id,person.name));        
+        }).catch((error) => handleError(error));        
       }
       return;
     }
@@ -78,7 +86,7 @@ const App = () => {
       setTimeout(() => {
         setMessage(null);
       },5000);
-    }).catch(() => handleError(person.id,person.name));        
+    }).catch((error) => handleError(error));        
   }
 
   const handleNameChange = (event) => {
@@ -124,7 +132,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} setPersons={setPersons} handleError={handleError}/>
+      <Persons persons={filteredPersons} setPersons={setPersons} handleError={handleDeleteError}/>
 
       {/* <div>debug: {newName}</div> */}
     </div>
